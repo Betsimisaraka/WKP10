@@ -44,12 +44,32 @@ const displayList = data => {
 		.join('');
 };
 
+
+function wait(ms = 0) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function destroyPopup(popup) {
+    popup.classList.remove('open');
+    await wait(1000);
+    //remove it from the dom
+    popup.remove();
+    //remove it from the javascript memory
+    popup = null;
+}
+
 const editPartner = (e) => {
 	// code edit function here
 	const editBtn = e.target;
-	if (editBtn.closest('button.edit')) {
-		editPartnerPopup();
-	}
+		return new Promise(async function(resolve) {
+		if (editBtn.closest('button.edit')) {
+			editPartnerPopup();
+		}
+		if (editBtn.closest('button.cancelEdit')) {
+			const cancelSubmit = document.querySelector('.popup');
+			destroyPopup(cancelSubmit);
+		}
+	});
 };
 
 const editPartnerPopup = (e) => {
@@ -92,7 +112,10 @@ const editPartnerPopup = (e) => {
 					<label for="phoneNumber">Phone number</label>
 					<input type="text" id="phoneNumber" name="phoneNumber" value="${phoneNumber}" required>
 				</fieldset>
-				<button type="submit" class="submitbtn">Save</button>
+				<div class="buttons">
+					<button type="submit" class="submitbtn">Save</button>
+					<button type="button" class="cancelEdit">Cancel</button>
+				</div>
 				</form>
 			`);
 			document.body.appendChild(popup);
@@ -103,29 +126,70 @@ const editPartnerPopup = (e) => {
 
 const deletePartner = (e) => {
 	// code delete function here
-	const editBtn = e.target;
-	if (editBtn.closest('button.delete')) {
-		return new Promise(async function(resolve) {
-			deleteDeletePopup();
-		});
-	}
+	const deletes = e.target;
+	return new Promise(async function(resolve) {
+		if (deletes.closest('button.delete')) {
+				deleteDeletePopup()
+		}
+		if (deletes.closest('button.yes')) {
+			const trElement = document.querySelector('.tbody_container');
+			destroyPopup(trElement);
+		}
+		if (deletes.closest('button.cancel')) {
+			const cancelBtn = document.querySelector('.popup');
+			destroyPopup(cancelBtn);
+		}
+	});
 };
 
-const deleteDeletePopup = (e) => {
+
+const handleSubmit = (e) => {
+	popup.addEventListener(
+		'submit', 
+		e => {
+			console.log(e.target);
+			e.preventDefault();
+			//popup.input.value;
+			let editedPerson = [];
+			const form = e.target;
+			const lastNameInput = form.lastName.value;
+			const firstNameInput = form.firstName.value;
+			const pictureInput = form.picture.value;
+			const jobTitleInput = form.jobTitle.value;
+			const jobAreaInput = form.jobArea.value;
+			const phoneInput = form.phoneNumber.value;
+
+			const html  = {
+				id: faker.random.uuid(),
+				lastName: lastName.textContent = lastNameInput,
+				firstName: firstName.textContent = firstNameInput,
+				jobTitle: jobTitle.textContent = jobTitleInput,
+				jobArea: jobArea.textContent = jobAreaInput,
+				phone: phoneNumber.textContent = phoneInput,
+				picture: picture.src = pictureInput,
+			}
+			editedPerson.push(html);
+			destroyPopup(popup);
+		}, 
+		{ once: true }
+	);
+}
+
+const deleteDeletePopup = () => {
 	// create confirmation popup here
+	const container = document.querySelector('.tbody_container');
+	const lastName = container.querySelector('.lastname').textContent;
 	return new Promise(async function(resolve) {
 		// First we need to create a popp with all the fields in it
 		const popup = document.createElement('div');
 			popup.classList.add('popup');
 			popup.insertAdjacentHTML('afterbegin',   
-		`
+		`	
+			<p> ${lastName}</p>
 			<p>Are you sure that you want to delete this partener</p>
-			<button class="yes">yes</button>
-			<button class="cancel">Cancel</button>
+			<button type="button" class="yes">yes</button>
+			<button type="button" class="cancel">Cancel</button>
 		`);
-		if ('yes') {
-
-		}
 	document.body.appendChild(popup);
 	await wait(50);
 	popup.classList.add('open');

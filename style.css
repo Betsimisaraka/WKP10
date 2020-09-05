@@ -102,10 +102,12 @@ tr:hover {
 }
 
 .popup {
-	background: hsla(0, 0%, 30%, 0.1);
-	position: fixed;
-	height: 100vh;
-	width: 100vw;
+	background: hsla(0, 0%, 30%, 1);
+	position: absolute;
+	height: 100%;
+	width: 500px;
+	margin-inline-end: auto;
+	margin-inline-start: 300px;
 	transition: all 0.25s;
 	top: 0;
 	display: grid;
@@ -114,6 +116,22 @@ tr:hover {
 	pointer-events: none;
 	--opacity: 0;
 	opacity: var(--opacity);
+}
+
+.popup .submitbtn,
+.popup .cancel {
+	background-color: blue;
+	color: #eff0f3;
+	text-transform: uppercase;
+	padding: 1rem;
+	border-radius: 10px;
+	border: 0;
+}
+
+.popup .buttons {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .popup fieldset {
