@@ -45,7 +45,7 @@ const displayList = data => {
 };
 
 function destroyPopup(popup) {
-    popup.remove();
+	popup.remove();
     //remove it from the javascript memory
     popup = null;
 }
@@ -123,7 +123,17 @@ const editPartnerPopup = (idToEdit) => {
 				if (cancelBtn) {
 					destroyPopup(popup);
 				}
+				const clickOutside = e.target.closest('table');
+				if (clickOutside) {
+					destroyPopup(popup);
+				}
 			});
+			window.addEventListener('keyup', e => {
+				if (e.key === 'Escape') {
+					destroyPopup(popup);
+				}
+			});
+
 			document.body.appendChild(popup);
 			await wait(50);
 			popup.classList.add('open');
@@ -166,7 +176,17 @@ const deleteDeletePopup = (idToDelete) => {
 				const trElement = document.querySelector('.tr_container');
 				destroyPopup(trElement);
 			}
+			const clickOutside = e.target.closest('table');
+			if (clickOutside) {
+				destroyPopup(div);
+			}
 		});
+		window.addEventListener('keyup', e => {
+			if (e.key === 'Escape') {
+				destroyPopup(div);
+			}
+		});
+
 	document.body.appendChild(div);
 	await wait(50);
 	div.classList.add('open');
