@@ -106,20 +106,20 @@ tr:hover {
 	position: absolute;
 	height: 100%;
 	width: 500px;
-	margin-inline-end: auto;
-	margin-inline-start: 300px;
 	transition: all 0.25s;
 	top: 0;
+	transform: translate(50%, 0%);
 	display: grid;
 	justify-content: center;
 	align-items: center;
-	pointer-events: none;
 	--opacity: 0;
 	opacity: var(--opacity);
 }
 
 .popup .submitbtn,
-.popup .cancel {
+.popup .cancelEdit,
+.container .yes,
+.container .cancelDelete {
 	background-color: blue;
 	color: #eff0f3;
 	text-transform: uppercase;
@@ -128,10 +128,15 @@ tr:hover {
 	border: 0;
 }
 
+.container .deletebtns,
 .popup .buttons {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+}
+
+.container .deletebtns {
+	justify-content: space-around;
 }
 
 .popup fieldset {
@@ -145,6 +150,7 @@ tr:hover {
 	transform: scale(var(--scale));
 }
 
+.container.open,
 .popup.open {
 	--opacity: 1;
 	pointer-events: all;
@@ -157,4 +163,23 @@ tr:hover {
     border: none;
     padding: 0;
     margin-block-end: 16px;
+}
+
+.container {
+	background: cyan;
+	position: absolute;
+	padding: 1rem;
+	height: 250px;
+	width: 400px;
+	transition: all 0.25s;
+	top: 0;
+	transform: translate(100%, 100%);
+	--opacity: 0;
+	opacity: var(--opacity);
+}
+
+.lastname {
+	text-align: center;
+	color: black;
+	text-transform: uppercase;
 }
